@@ -5,12 +5,20 @@
  */
 package com.unju.tpi.poo.cardozofarfantorrez.View;
 
+
+import controlador.EmpleadosJpaController;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import modelo.Empleados;
 
 /**
  *
- * @author Cardozo Franco, Farfan Yamil, Torrez Miguel
+ * @author Cardozo Franco
+ *         Farfan Yamil
+ *         Torrez Miguel
  */
 public class Menu {
 
@@ -62,8 +70,10 @@ public class Menu {
     }
 
     public static void empleados() {
+        Empleados empleado = new Empleados();
+        EmpleadosJpaController emp = new EmpleadosJpaController();
         int opcion = 0;
-
+       
         while (opcion != 8) {
             System.out.println("____________________________________");
             System.out.println("+    Municipalidad de La Quiaca    +");
@@ -89,10 +99,25 @@ public class Menu {
             }
             switch (opcion) {
                 case 1:
-
+                    Date fecha = new Date(02 / 12 / 1998);
+                    empleado.setNroLegajo(1);
+                    empleado.setApellido("Torrez");
+                    empleado.setNombre("Yamil");
+                    empleado.setFechaNacimiento(fecha);
+                    empleado.setSueldoBasico(0);
+                    try {
+                        emp.create(empleado);
+                    } catch (Exception ex) {
+                        System.out.println("error" + ex);
+                    }
+                    
                     break;
                 case 2:
-
+                    try {
+                        emp.destroy(1);
+                    } catch (Exception ex) {
+                        System.out.println("error" + ex);
+                    }
                     break;
                 case 3:
 
