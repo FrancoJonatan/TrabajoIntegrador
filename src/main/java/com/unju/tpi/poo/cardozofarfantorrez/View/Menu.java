@@ -123,7 +123,7 @@ public class Menu {
 
                     break;
                 case 4:
-
+                        System.out.println(emp.getEntityManager());
                     break;
                 case 5:
 
@@ -211,4 +211,5 @@ public class Menu {
             }
         }
     }
+    
 }

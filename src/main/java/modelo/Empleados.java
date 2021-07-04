@@ -6,6 +6,11 @@
 package modelo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -154,5 +159,15 @@ public class Empleados implements Serializable {
     public String toString() {
         return "modelo.Empleados[ nroLegajo=" + nroLegajo + " ]";
     }
-    
+
+    public int calcularEdad(Date fechaNac) {
+        int dia = fechaNac.getDate();
+        int mes = fechaNac.getMonth();
+        int anio = fechaNac.getYear();
+        LocalDate fechaHoy = LocalDate.now();
+        LocalDate fechaNacimiento = LocalDate.of(anio, mes, dia);
+        Period periodo = Period.between(fechaNacimiento, fechaHoy);
+        return periodo.getYears();
+    }
+
 }
