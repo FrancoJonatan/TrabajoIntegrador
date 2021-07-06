@@ -5,14 +5,13 @@
  */
 package com.unju.tpi.poo.cardozofarfantorrez.View;
 
-
-import controlador.EmpleadosJpaController;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Empleados;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 /**
  *
@@ -48,6 +47,7 @@ public class Menu {
                 opcion = scanner.nextInt();
             } catch (InputMismatchException e) {
                 scanner.nextLine();
+                opcion = 0;
                 System.out.println("Debe ingresar un numero");
             }
             switch (opcion) {
@@ -70,10 +70,11 @@ public class Menu {
     }
 
     public static void empleados() {
-        Empleados empleado = new Empleados();
-        EmpleadosJpaController emp = new EmpleadosJpaController();
+        Empleados emp = new Empleados();
         int opcion = 0;
-       
+        int nro_legajo, DNI, dia, mes, anio;
+        float sueldo;
+        String nombre, apellido;
         while (opcion != 8) {
             System.out.println("____________________________________");
             System.out.println("+    Municipalidad de La Quiaca    +");
@@ -95,32 +96,31 @@ public class Menu {
                 opcion = scanner.nextInt();
             } catch (InputMismatchException e) {
                 scanner.nextLine();
+                opcion = 0;
                 System.out.println("Debe ingresar un numero");
             }
             switch (opcion) {
                 case 1:
-                    Date fecha = new Date(02 / 12 / 1998);
-                    empleado.setNroLegajo(1);
-                    empleado.setApellido("Torrez");
-                    empleado.setNombre("Yamil");
-                    empleado.setFechaNacimiento(fecha);
-                    empleado.setSueldoBasico(0);
                     try {
-                        emp.create(empleado);
+                        emp.crearEmpleado();
                     } catch (Exception ex) {
-                        System.out.println("error" + ex);
+                        System.out.println("Error " + ex);
                     }
                     
                     break;
                 case 2:
                     try {
-                        emp.destroy(1);
+                        emp.eliminarEmpleado();
                     } catch (Exception ex) {
-                        System.out.println("error" + ex);
+                        System.out.println("Error " + ex);
                     }
                     break;
                 case 3:
-
+                    try {
+                        emp.ModificarEmpleado();
+                    } catch (Exception ex) {
+                        System.out.println("Error " + ex);
+                    }
                     break;
                 case 4:
 
@@ -132,7 +132,12 @@ public class Menu {
 
                     break;
                 case 7:
-
+                    try {
+                        emp.BuscarEmpleado();
+                    } catch (Exception ex) {
+                        System.out.println("Error " + ex);
+                    }
+                    
                     break;
                 case 8:
                     System.out.println("Volviendo al Menu Admistracion");
@@ -171,6 +176,7 @@ public class Menu {
                 opcion = scanner.nextInt();
             } catch (InputMismatchException e) {
                 scanner.nextLine();
+                opcion = 0;
                 System.out.println("Debe ingresar un numero");
             }
             switch (opcion) {

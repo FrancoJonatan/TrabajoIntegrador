@@ -5,8 +5,15 @@
  */
 package modelo;
 
+import static com.unju.tpi.poo.cardozofarfantorrez.View.Menu.scanner;
+import controlador.EmpleadosJpaController;
 import java.io.Serializable;
+import java.util.ArrayList;
+//import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +40,10 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Empleados.findBySueldoBasico", query = "SELECT e FROM Empleados e WHERE e.sueldoBasico = :sueldoBasico")
     , @NamedQuery(name = "Empleados.findByCodProyecto", query = "SELECT e FROM Empleados e WHERE e.codProyecto = :codProyecto")})
 public class Empleados implements Serializable {
-
+    
+    public static EmpleadosJpaController empJPA = new EmpleadosJpaController();
+    public static  Scanner scanner = new Scanner(System.in);
+    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -155,4 +165,150 @@ public class Empleados implements Serializable {
         return "modelo.Empleados[ nroLegajo=" + nroLegajo + " ]";
     }
     
+    public void crearEmpleado() {
+        int nro_legajo, DNI, dia, mes, anio;
+        float sueldo;
+        String nombre, apellido;
+        
+        System.out.println("Ingrese Nº de Legajo: ");
+        nro_legajo = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Ingrese Nombre: ");
+        nombre = scanner.nextLine();
+        System.out.println("Ingrese Apellido: ");
+        apellido = scanner.nextLine();
+        System.out.println("Ingrese DNI: ");
+        DNI = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Ingrese Fecha de nacimiento: ");
+        System.out.println("Dia: ");
+        dia = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Mes: ");
+        mes = scanner.nextInt() + 1;
+        scanner.nextLine();
+        System.out.println("Año: ");
+        anio = scanner.nextInt() + 1900;
+        scanner.nextLine();
+        Date fecha = new Date(anio, mes, dia);
+        System.out.println("Ingrese Sueldo_basico");
+        sueldo = scanner.nextFloat();
+        scanner.nextLine();
+        Empleados nuevoEmpleado = new Empleados(nro_legajo, apellido, nombre, DNI, fecha, sueldo);
+        try {
+            empJPA.create(nuevoEmpleado);
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+    
+    public void eliminarEmpleado() {
+        Empleados empleado = new Empleados();
+        System.out.println("Ingrese DNI del empleado que desea Eliminar:");
+        int dni = scanner.nextInt();
+        List<Empleados> listaEmpleados = new ArrayList();
+        listaEmpleados = empJPA.findEmpleadosEntities();
+        for (int i = 0; i < listaEmpleados.size(); i++) {
+            if (dni == listaEmpleados.get(i).getDni()) {
+                try {
+                    empJPA.destroy(listaEmpleados.get(i).getNroLegajo());
+                } catch (Exception e) {
+                    System.out.println("Error: " + e);
+                }
+            }
+        }
+    }
+    
+    public void ModificarEmpleado() {
+        EmpleadosJpaController emp = new EmpleadosJpaController();
+       
+        Empleados empleado = new Empleados();
+        System.out.println("Ingrese Nº_legajo del Empleado q desea modificar algun dato: ");
+        int nro_legajo = scanner.nextInt();
+        empleado = emp.findEmpleados(nro_legajo);
+        int opcion = 0;
+        System.out.println("+==================================+");
+        System.out.println("+   1. Modificar Nombre            +");
+        System.out.println("+   2. Modificar Apellido          +");
+        System.out.println("+   3. Modificar DNI               +");
+        System.out.println("+   4. Modificar fecha_nacimiento  +");
+        System.out.println("+   Ingrese opcion                 +");
+        System.out.println("+==================================+");
+        try {
+            opcion = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            scanner.nextLine();
+            opcion = 0;
+            System.out.println("Debe ingresar un numero");
+        }
+        switch (opcion) {
+            case 1:
+                System.out.println("Ingrese nuevo Nombre:");
+                String nombre = scanner.next();
+                empleado.setNombre(nombre);
+                break;
+            case 2:
+                System.out.println("Ingrese nuevo Apellido:");
+                String apellido = scanner.next();
+                empleado.setApellido(apellido);
+                break;
+            case 3:
+                System.out.println("Ingrese nuevo DNI:");
+                int DNI = scanner.nextInt();
+                scanner.nextLine();
+                empleado.setDni(DNI);
+                break;
+            case 4:
+                System.out.println("Ingrese nueva Fecha de Nacimiento:");
+                System.out.println("Dia: ");
+                int dia = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("Mes: ");
+                int mes = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("Año: ");
+                int anio = scanner.nextInt();
+                scanner.nextLine();
+                Date fecha = new Date(anio, mes, dia);
+                empleado.setFechaNacimiento(fecha);
+            default:
+                System.out.println("Opcion Incorrecta");
+                break;
+        }
+        try {
+            emp.edit(empleado);
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex);
+        }
+    }
+    
+    public void BuscarEmpleado() {
+        System.out.println("Ingrese DNI del empleado que quiere Buscar:");
+        int dni = scanner.nextInt();
+        List<Empleados> listaEmpleados = new ArrayList();
+        listaEmpleados = empJPA.findEmpleadosEntities();
+
+        System.out.println("+-----------------------------------------------------------------------------------------------+");
+        System.out.println("+                                      Lista de Empleados                                       +");
+        System.out.println("+-----------------------------------------------------------------------------------------------+");
+        System.out.println("|N° Legajo|    Apellido   |    Nombre      |   DNI    | FecNacimiento |  sueldo  | Cod Proyecto |");
+        System.out.println("+-----------------------------------------------------------------------------------------------+");
+        for (int i = 0; i < listaEmpleados.size(); i++) {
+            if (dni == listaEmpleados.get(i).getDni()) {
+                int dia = listaEmpleados.get(i).getFechaNacimiento().getDate();
+                int mes = listaEmpleados.get(i).getFechaNacimiento().getMonth();
+                int anio = listaEmpleados.get(i).getFechaNacimiento().getYear();
+                String fecha = dia + "-" + mes + "-" + anio;
+                System.out.printf("|   %-3s   | %-13s | %-14s | %-8s | %-13s | %-8s |     %-4s \n",
+                        listaEmpleados.get(i).getNroLegajo(),
+                        listaEmpleados.get(i).getApellido(),
+                        listaEmpleados.get(i).getNombre(),
+                        listaEmpleados.get(i).getDni(),
+                        fecha,
+                        listaEmpleados.get(i).getSueldoBasico(),
+                        listaEmpleados.get(i).getCodProyecto() + "     |");
+            }
+        }
+        System.out.println("+-----------------------------------------------------------------------------------------------+");
+    }
 }

@@ -19,7 +19,9 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author MI PC
+ * @author Miguel Torrez
+ *         Franco Cardozo
+ *         Yamil Farfan
  */
 @Entity
 @Table(name = "proyectos", catalog = "municipalidad_lq", schema = "")
@@ -131,5 +133,4 @@ public class Proyectos implements Serializable {
     public String toString() {
         return "modelo.Proyectos[ codigo=" + codigo + " ]";
     }
-    
 }

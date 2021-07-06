@@ -23,7 +23,7 @@ import modelo.Empleados;
  * @author MI PC
  */
 public class EmpleadosJpaController implements Serializable {
-
+        
     public EmpleadosJpaController() {
         this.emf = Persistence.createEntityManagerFactory("municipalidad_lq");
     }
@@ -74,7 +74,7 @@ public class EmpleadosJpaController implements Serializable {
             }
         }
     }
-
+    
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,7 +95,7 @@ public class EmpleadosJpaController implements Serializable {
             }
         }
     }
-
+    
     public List<Empleados> findEmpleadosEntities() {
         return findEmpleadosEntities(true, -1, -1);
     }
@@ -140,6 +140,5 @@ public class EmpleadosJpaController implements Serializable {
         } finally {
             em.close();
         }
-    }
-    
+    } 
 }
