@@ -99,8 +99,9 @@ public class Menu {
             }
             switch (opcion) {
                 case 1:
-                    Date fecha = new Date(02 / 12 / 1998);
-                    empleado.setNroLegajo(1);
+                    Date fecha = new Date(1999, 04, 12);
+                    System.out.println("Ingrese numero de legajo:");
+                    empleado.setNroLegajo(scanner.nextInt());
                     empleado.setApellido("Torrez");
                     empleado.setNombre("Yamil");
                     empleado.setFechaNacimiento(fecha);
@@ -110,26 +111,34 @@ public class Menu {
                     } catch (Exception ex) {
                         System.out.println("error" + ex);
                     }
-                    
                     break;
                 case 2:
-                    try {
-                        emp.destroy(1);
-                    } catch (Exception ex) {
-                        System.out.println("error" + ex);
-                    }
+                    
                     break;
                 case 3:
 
                     break;
                 case 4:
-                        System.out.println(emp.getEntityManager());
+                    try {
+                        empleado.mostrarEmpleados();
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e);
+                    }                    
                     break;
                 case 5:
-
+                    try {
+                        empleado.mayorEdad();
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e);
+                    }         
                     break;
                 case 6:
-
+                    try {
+                        System.out.println("Ingrese un sueldo basico:");
+                        float suelBasico = scanner.nextFloat();
+                        empleado.sueldoBasico(suelBasico);
+                    } catch (Exception e) {
+                    }
                     break;
                 case 7:
 

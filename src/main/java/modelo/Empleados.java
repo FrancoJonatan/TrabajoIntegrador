@@ -5,13 +5,16 @@
  */
 package modelo;
 
+import controlador.EmpleadosJpaController;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -159,7 +162,33 @@ public class Empleados implements Serializable {
     public String toString() {
         return "modelo.Empleados[ nroLegajo=" + nroLegajo + " ]";
     }
+    
+    public void mostrarEmpleados() {
+        EmpleadosJpaController emp = new EmpleadosJpaController();
+        List<Empleados> listaEmpleados = new ArrayList();
+        listaEmpleados = emp.findEmpleadosEntities();
+        System.out.println("+--------------------------------------------------------------------------------+");
+        System.out.println("+                                      Lista de Empleados                        +");
+        System.out.println("+--------------------------------------------------------------------------------+");
+        System.out.println("|N° Legajo|    Apellido   |    Nombre      |   DNI    | FecNacimiento |  sueldo  |");
+        System.out.println("+--------------------------------------------------------------------------------+");
+        for (int i = 0; i < listaEmpleados.size(); i++) {
+            int dia = listaEmpleados.get(i).getFechaNacimiento().getDate();
+            int mes = listaEmpleados.get(i).getFechaNacimiento().getMonth();
+            int anio = listaEmpleados.get(i).getFechaNacimiento().getYear();
+            String fecha = dia + "-" + mes + "-" + anio;
+            System.out.printf("|   %-3s   | %-13s | %-14s | %-8s | %-13s | %-8s  \n",
+                    listaEmpleados.get(i).getNroLegajo(),
+                    listaEmpleados.get(i).getApellido(),
+                    listaEmpleados.get(i).getNombre(),
+                    listaEmpleados.get(i).getDni(),
+                    fecha,
+                    listaEmpleados.get(i).getSueldoBasico() + " |");
+        }
+        System.out.println("+--------------------------------------------------------------------------------+");
 
+    }
+    
     public int calcularEdad(Date fechaNac) {
         int dia = fechaNac.getDate();
         int mes = fechaNac.getMonth();
@@ -169,5 +198,60 @@ public class Empleados implements Serializable {
         Period periodo = Period.between(fechaNacimiento, fechaHoy);
         return periodo.getYears();
     }
-
+    
+    public void mayorEdad() {
+        EmpleadosJpaController emp = new EmpleadosJpaController();
+        List<Empleados> listaEmpleados = new ArrayList();
+        listaEmpleados = emp.findEmpleadosEntities();
+        Empleados empleado = new Empleados();
+        int mayorEmp = 0;
+        int edad = 0;
+        for (int i = 0; i < listaEmpleados.size(); i++) {
+            edad = calcularEdad(listaEmpleados.get(i).getFechaNacimiento());
+            if (mayorEmp < edad) {
+                mayorEmp = edad;
+                empleado = listaEmpleados.get(i);
+            }
+        }
+        System.out.println("+--------------------------------------------------------------------------------+");
+        System.out.println("|N° Legajo|    Apellido   |    Nombre      |   DNI    | FecNacimiento |  sueldo  |");
+        System.out.println("+--------------------------------------------------------------------------------+");
+        int dia = empleado.getFechaNacimiento().getDate();
+        int mes = empleado.getFechaNacimiento().getMonth();
+        int anio = empleado.getFechaNacimiento().getYear();
+        String fecha = dia + "-" + mes + "-" + anio;
+        System.out.printf("|   %-3s   | %-13s | %-14s | %-8s | %-13s | %-8s  \n",
+                empleado.getNroLegajo(),
+                empleado.getApellido(),
+                empleado.getNombre(),
+                empleado.getDni(),
+                fecha,
+                empleado.getSueldoBasico() + " |");
+        System.out.println("+--------------------------------------------------------------------------------+");
+    }
+    
+    public void sueldoBasico(float suelBasico) {
+        EmpleadosJpaController emp = new EmpleadosJpaController();
+        List<Empleados> listaEmpleados = new ArrayList();
+        listaEmpleados = emp.findEmpleadosEntities();
+        System.out.println("+--------------------------------------------------------------------------------+");
+        System.out.println("|N° Legajo|    Apellido   |    Nombre      |   DNI    | FecNacimiento |  sueldo  |");
+        System.out.println("+--------------------------------------------------------------------------------+");
+        for (int i = 0; i < listaEmpleados.size(); i++) {
+            if (suelBasico < listaEmpleados.get(i).getSueldoBasico()) {
+                int dia = listaEmpleados.get(i).getFechaNacimiento().getDate();
+                int mes = listaEmpleados.get(i).getFechaNacimiento().getMonth();
+                int anio = listaEmpleados.get(i).getFechaNacimiento().getYear();
+                String fecha = dia + "-" + mes + "-" + anio;
+                System.out.printf("|   %-3s   | %-13s | %-14s | %-8s | %-13s | %-8s  \n",
+                        listaEmpleados.get(i).getNroLegajo(),
+                        listaEmpleados.get(i).getApellido(),
+                        listaEmpleados.get(i).getNombre(),
+                        listaEmpleados.get(i).getDni(),
+                        fecha,
+                        listaEmpleados.get(i).getSueldoBasico() + " |");
+            }
+        }
+        System.out.println("+--------------------------------------------------------------------------------+");
+    }
 }
