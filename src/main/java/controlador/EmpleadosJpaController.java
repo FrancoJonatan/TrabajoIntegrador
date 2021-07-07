@@ -8,6 +8,7 @@ package controlador;
 import controlador.exceptions.NonexistentEntityException;
 import controlador.exceptions.PreexistingEntityException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,7 +21,7 @@ import modelo.Empleados;
 
 /**
  *
- * @author MI PC
+ * @author Cardozo Franco Farfan Yamil Torrez Miguel
  */
 public class EmpleadosJpaController implements Serializable {
 

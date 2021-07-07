@@ -20,7 +20,7 @@ import modelo.Proyectos;
 
 /**
  *
- * @author MI PC
+ * @author Cardozo Franco Farfan Yamil Torrez Miguel
  */
 public class ProyectosJpaController implements Serializable {
 
